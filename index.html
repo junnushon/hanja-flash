@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japanese Flashcards</title>
+    <meta name="description" content="Learn Hanja 한자 암기/테스트">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B2SBD334RC"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-B2SBD334RC');
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="spacer top-spacer"></div>
+        <div class="flash-card-container">
+            <div id="selection">
+                <label for="script-select">Select script:</label>
+                <select id="script-select">
+                    <option value="8">8급</option>
+                    <option value="7_2">7-2급</option>
+                    <option value="7">7급</option>
+                    <option value="6_2+">6-2급</option>
+                    <option value="6">6급</option>
+                    <option value="5_2+">5-2급</option>
+                    <option value="5">5급</option>
+                    <option value="4_2+">4-2급</option>
+                    <option value="4">4급</option>
+                    <option value="3_2+">3-2급</option>
+                    <option value="3">3급</option>
+                    <option value="2">2급</option>
+                    <option value="1">1급</option>
+                </select>
+            </div>
+            <div id="flash-card" class="flash-card">
+                <!-- Japanese character will be displayed here -->
+            </div>
+            <div id="answer-container">
+                <input type="text" id="answer" placeholder="Pronunciation">
+            </div>
+            <button id="check-answer">Check Answer</button>
+            <div id="result"></div>
+            <button id="next-char" style="display: none;">Next</button>
+        </div>
+        <footer>
+            <p><a href="https://github.com/junnushon/hanja-flash" target="_blank">https://github.com/junnushon/hanja-flash</a></p>
+        </footer>
+        <div class="spacer"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
