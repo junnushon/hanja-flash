@@ -1,4 +1,4 @@
-# Hanja Flashcards for Korean Language Learners
+# 급수별 한자 학습 플래시카드
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/junnushon/hanja-flash)
 ![GitHub issues](https://img.shields.io/github/issues/junnushon/hanja-flash)
