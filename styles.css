@@ -9,6 +9,39 @@ body {
     background-color: #f0f0f0;
 }
 
+#progress-bar-container {
+    width: 100%;
+    height: 20px;
+    background-color: #ddd;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+#progress-bar {
+    height: 100%;
+    background-color: #ddd;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+#progress-bar-correct,
+#progress-bar-incorrect {
+    height: 100%;
+    position: absolute;
+    top: 0;
+}
+
+#progress-bar-correct {
+    background-color: green;
+}
+
+#progress-bar-incorrect {
+    background-color: red;
+}
+
 .container {
     display: flex;
     flex-direction: column;

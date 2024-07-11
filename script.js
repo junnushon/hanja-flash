@@ -2,10 +2,13 @@ let characters = [];
 let currentChar = {};
 let currentScript = '8';
 let recentCharacters = [];
+let correctAnswers = 0;
+let incorrectAnswers = 0;
+let totalFlashcards = 0;
 
 function loadCharacters(script) {
     const scriptFile = `data/${script}.json`;
-    console.log(scriptFile)
+    console.log(scriptFile);
     fetch(scriptFile)
         .then(response => response.json())
         .then(data => {
@@ -14,6 +17,7 @@ function loadCharacters(script) {
                 showCount: 0,
                 wrongCount: 0
             }));
+            totalFlashcards = characters.length;
             resetCounts();
             getRandomCharacter();
         });
@@ -25,6 +29,26 @@ function resetCounts() {
         char.wrongCount = 0;
     });
     recentCharacters = [];
+    correctAnswers = 0;
+    incorrectAnswers = 0;
+    updateProgressBar();
+}
+
+function updateProgressBar() {
+    const progressBarCorrect = document.getElementById('progress-bar-correct');
+    const progressBarIncorrect = document.getElementById('progress-bar-incorrect');
+
+    const totalAnswered = correctAnswers + incorrectAnswers;
+    const totalPercentage = (totalAnswered / totalFlashcards) * 100;
+    const correctPercentage = (correctAnswers / totalFlashcards) * 100;
+    const incorrectPercentage = (incorrectAnswers / totalFlashcards) * 100;
+
+    progressBarCorrect.style.width = `${correctPercentage}%`;
+    progressBarIncorrect.style.width = `${incorrectPercentage}%`;
+    progressBarIncorrect.style.left = `${correctPercentage}%`;
+
+    // Update overall progress bar width
+    document.getElementById('progress-bar').style.width = `${totalPercentage}%`;
 }
 
 function getRandomCharacter() {
@@ -69,14 +93,17 @@ document.getElementById('check-answer').addEventListener('click', () => {
     if (userAnswer === currentChar.korean || userAnswer === currentChar.korean2 || userAnswer === currentChar.korean3) {
         resultDiv.innerText = `Correct! ${currentChar.meaning} ${currentChar.korean}`;
         resultDiv.style.color = 'green';
+        correctAnswers++;
     } else {
         resultDiv.innerText = `Incorrect. The correct answer is ${currentChar.meaning} ${currentChar.korean}`;
         resultDiv.style.color = 'red';
         currentChar.wrongCount++;
+        incorrectAnswers++;
     }
     document.getElementById('next-char').style.display = 'inline';
     document.getElementById('check-answer').style.display = 'none';
     document.getElementById('next-char').focus();
+    updateProgressBar();
 });
 
 document.getElementById('next-char').addEventListener('click', () => {
@@ -98,5 +125,4 @@ document.getElementById('answer').addEventListener('keyup', (event) => {
     }
 });
 
-// Load the default script (Hiragana) when the page loads
 window.onload = () => loadCharacters(currentScript);
