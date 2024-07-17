@@ -5,6 +5,8 @@ let recentCharacters = [];
 let correctAnswers = 0;
 let incorrectAnswers = 0;
 let totalFlashcards = 0;
+let studyMode = false; // 학습 모드 여부
+let studyInterval; // 학습 모드 인터벌
 
 function loadCharacters(script) {
     const scriptFile = `data/${script}.json`;
@@ -76,15 +78,56 @@ function getRandomCharacter() {
     currentChar = selectedCharacter;
     document.getElementById('flash-card').innerText = currentChar.character;
     document.getElementById('result').innerText = '';
-    document.getElementById('answer').value = '';
-    document.getElementById('next-char').style.display = 'none';
-    document.getElementById('check-answer').style.display = 'inline';
-    document.getElementById('answer').focus();
+    if (!studyMode) {
+        document.getElementById('answer').value = '';
+        document.getElementById('next-char').style.display = 'none';
+        document.getElementById('check-answer').style.display = 'inline';
+        document.getElementById('answer').focus();
+    }
 }
 
-document.getElementById('script-select').addEventListener('change', (event) => {
+function startStudyMode() {
+    studyMode = true;
+    document.getElementById('answer-container').innerHTML = '<input type="text" id="dummy-input" disabled style="opacity: 0; height: 1px;">'; // 빈 인풋 필드 유지
+    document.getElementById('check-answer').style.display = 'none'; // 체크 버튼 숨김
+    document.getElementById('next-char').style.display = 'none'; // 다음 버튼 숨김
+
+    getRandomCharacter(); // 첫 글자 표시
+    showCharacterInfo(); // 첫 글자의 뜻과 음 표시
+
+    studyInterval = setInterval(() => {
+        getRandomCharacter();
+        showCharacterInfo();
+    }, 2000); // 2초 간격으로 다음 글자
+}
+
+function stopStudyMode() {
+    studyMode = false;
+    clearInterval(studyInterval); // 인터벌 정지
+    document.getElementById('answer-container').innerHTML = '<input type="text" id="answer" placeholder="Pronunciation">'; // 인풋 박스 복원
+    document.getElementById('check-answer').style.display = 'inline'; // 체크 버튼 복원
+    document.getElementById('next-char').style.display = 'none'; // 다음 버튼 숨김
+    document.getElementById('result').innerText = ''; // 결과 초기화
+}
+
+function showCharacterInfo() {
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerText = `${currentChar.meaning} ${currentChar.korean}`;
+    resultDiv.style.color = 'black';
+}
+
+document.getElementById('script-select-1').addEventListener('change', (event) => {
     currentScript = event.target.value;
     loadCharacters(currentScript);
+});
+
+document.getElementById('script-select-2').addEventListener('change', (event) => {
+    const mode = event.target.value;
+    if (mode === 'learn') {
+        startStudyMode();
+    } else {
+        stopStudyMode();
+    }
 });
 
 document.getElementById('check-answer').addEventListener('click', () => {
@@ -110,7 +153,7 @@ document.getElementById('next-char').addEventListener('click', () => {
     getRandomCharacter();
 });
 
-document.getElementById('answer').addEventListener('keyup', (event) => {
+document.addEventListener('keyup', (event) => {
     if (event.key === 'Enter') {
         const userAnswer = document.getElementById('answer').value.trim();
         if (userAnswer !== '') {
